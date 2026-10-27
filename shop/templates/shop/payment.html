@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | ShopEase</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px 14px;
+            background: #f3f5f9;
+            font-family: Arial, sans-serif;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 25px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px #17203312;
+        }
+
+        .brand {
+            color: #2459e0;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 29px;
+            margin-bottom: 10px;
+        }
+
+        .amount {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 18px 0;
+        }
+
+        .notice {
+            background: #fff6e9;
+            color: #8a4700;
+            padding: 14px;
+            border-radius: 12px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        .method,
+        .app-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid #d4dbea;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .method:has(input:checked),
+        .app-option:has(input:checked) {
+            border: 2px solid #2864ee;
+            background: #f0f5ff;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #2864ee;
+        }
+
+        .app-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #edf2ff;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .app-name {
+            font-weight: bold;
+        }
+
+        .app-description {
+            color: #69758a;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        #upiApps {
+            display: none;
+            padding: 15px;
+            margin-top: 14px;
+            background: #fafbff;
+            border: 1px solid #e3e8f2;
+            border-radius: 14px;
+        }
+
+        #upiApps h2 {
+            font-size: 19px;
+            margin-top: 0;
+        }
+
+        .demo-label {
+            color: #b45309;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+            border: none;
+            border-radius: 11px;
+            padding: 17px;
+            background: #2864ee;
+            color: white;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #174ac4;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            color: #2459e0;
+            text-decoration: none;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 22px 17px;
+                margin: 8px auto;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .amount {
+                font-size: 31px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="brand">ShopEase</div>
+
+        <h1>Complete Your Payment</h1>
+
+        <p>Order number: #{{ order.id }}</p>
+
+        <div class="amount">
+            ₹{{ order.total_amount|floatformat:2 }}
+        </div>
+
+
+
+        <form method="post">
+            {% csrf_token %}
+
+            <h2>Choose payment method</h2>
+
+            <label class="method">
+                <input type="radio" name="payment_method" value="UPI" checked>
+                <span>🟢 UPI Payment</span>
+            </label>
+
+            <div id="upiApps">
+                <h2>Select a UPI app</h2>
+
+                <label class="app-option">
+                    <input type="radio" name="upi_app" value="Google Pay" checked>
+                    <span class="app-icon">G</span>
+                    <span>
+                        <span class="app-name">Google Pay</span>
+                        <span class="app-description" style="display:block">
+                            selection
+                        </span>
+                    </span>
+                </label>
+
+                <label class="app-option">
+                    <input type="radio" name="upi_app" value="PhonePe">
+                    <span class="app-icon">🟣</span>
+                    <span>
+                        <span class="app-name">PhonePe</span>
+                        <span class="app-description" style="display:block">
+                            selection
+                        </span>
+                    </span>
+                </label>
+
+                <label class="app-option">
+                    <input type="radio" name="upi_app" value="Paytm">
+                    <span class="app-icon">🔵</span>
+                    <span>
+                        <span class="app-name">Paytm</span>
+                        <span class="app-description" style="display:block">
+                            selection
+                        </span>
+                    </span>
+                </label>
+
+                <label class="app-option">
+                    <input type="radio" name="upi_app" value="BHIM">
+                    <span class="app-icon">🇮🇳</span>
+                    <span>
+                        <span class="app-name">BHIM UPI</span>
+                        <span class="app-description" style="display:block">
+                            selection
+                        </span>
+                    </span>
+                </label>
+            </div>
+
+
+            <label class="method">
+                <input type="radio" name="payment_method" value="CARD">
+                <span>💳 Demo Card Payment</span>
+            </label>
+
+            <div id="cardFields" style="display:none; margin:15px 0; padding:20px;
+     border:1px solid #d4dbea; border-radius:12px; background:#fafbff;">
+
+                <h2>Card Details</h2>
+                <p style="color:#8a5700;">
+
+                </p>
+
+                <label for="cardholder">Cardholder Name</label>
+                <input id="cardholder" type="text" placeholder="Demo User" autocomplete="off" maxlength="60">
+
+                <label for="cardlast6">Last 6 Digits of Card</label>
+                <input id="cardlast6" type="text" inputmode="numeric" placeholder="123456" maxlength="6"
+                    autocomplete="off">
+
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:120px;">
+                        <label for="expiry">Expiry Date</label>
+                        <input id="expiry" type="text" placeholder="MM/YY" maxlength="5" autocomplete="off">
+                    </div>
+
+                    <div style="flex:1; min-width:120px;">
+                        <label for="cvv">CVV (Demo)</label>
+                        <input id="cvv" type="password" inputmode="numeric" placeholder="123" maxlength="4"
+                            autocomplete="off">
+                    </div>
+                </div>
+
+                <p style="font-size:13px; color:#68758a;">
+
+                </p>
+            </div>
+
+            <style>
+                #cardFields input {
+                    display: block;
+                    width: 100%;
+                    padding: 12px;
+                    margin: 7px 0 16px;
+                    border: 1px solid #ccd5e4;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    box-sizing: border-box;
+                }
+
+                #cardFields label {
+                    font-weight: bold;
+                    display: block;
+                    margin-top: 8px;
+                }
+            </style>
+
+
+            <label class="method">
+                <input type="radio" name="payment_method" value="COD">
+                <span>📦 Cash on Delivery</span>
+            </label>
+
+            <button type="submit" class="button">
+                Confirm Payment
+            </button>
+        </form>
+
+        <a href="/" class="back">← Back to Shop</a>
+
+    </div>
+
+    <script>
+        const methods = document.querySelectorAll(
+            'input[name="payment_method"]'
+        );
+
+        const upiApps = document.getElementById("upiApps");
+        const cardFields = document.getElementById("cardFields");
+
+        function updatePaymentOptions() {
+            const selected = document.querySelector(
+                'input[name="payment_method"]:checked'
+            );
+
+            const method = selected ? selected.value : "";
+
+            if (upiApps) {
+                upiApps.style.display = method === "UPI" ? "block" : "none";
+            }
+
+            if (cardFields) {
+                cardFields.style.display = method === "CARD" ? "block" : "none";
+            }
+        }
+
+        methods.forEach(function (method) {
+            method.addEventListener("change", updatePaymentOptions);
+        });
+
+        updatePaymentOptions();
+    </script>
+
+</body>
+
+</html>

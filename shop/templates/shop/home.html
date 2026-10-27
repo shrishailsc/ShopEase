@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ShopEase | Discover Your Style</title>
+
+    <style>
+        :root {
+            --navy: #171b3b;
+            --purple: #6c4cf1;
+            --purple-dark: #5535d6;
+            --text: #20213a;
+            --muted: #777b91;
+            --bg: #f7f7fc;
+            --white: #ffffff;
+            --green: #138653;
+            --border: #eeeef5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .announcement {
+            background: var(--navy);
+            color: white;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, .96);
+            border-bottom: 1px solid var(--border);
+            padding: 19px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 29px;
+            font-weight: 850;
+            letter-spacing: -1.4px;
+            color: var(--navy);
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--purple);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 26px;
+            align-items: center;
+            font-size: 14px;
+            color: #55576d;
+        }
+
+        .nav-links a:hover {
+            color: var(--purple);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f5f5fa;
+            border: 1px solid #ededf5;
+            border-radius: 12px;
+            padding: 0 13px;
+            min-width: 200px;
+        }
+
+        .search-box input {
+            width: 100%;
+            min-width: 0;
+            border: 0;
+            outline: none;
+            background: transparent;
+            padding: 12px 0;
+            font-size: 13px;
+        }
+
+        .cart-link {
+            background: var(--navy);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 11px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: .2s;
+        }
+
+        .cart-link:hover {
+            background: var(--purple);
+            transform: translateY(-1px);
+        }
+
+        .hero-wrap {
+            padding: 34px 6% 20px;
+        }
+
+        .hero {
+            min-height: 355px;
+            border-radius: 26px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 55px 6%;
+            background:
+                radial-gradient(circle at 84% 18%, #d8ceff 0, transparent 25%),
+                radial-gradient(circle at 85% 100%, #c9d8ff 0, transparent 35%),
+                linear-gradient(115deg, #f0edff, #e9edff 55%, #f7f3ff);
+        }
+
+        .hero::after {
+            content: "S";
+            position: absolute;
+            right: 8%;
+            top: 50%;
+            transform: translateY(-50%) rotate(-12deg);
+            font-size: clamp(190px, 30vw, 360px);
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(108, 76, 241, .08);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 570px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            background: white;
+            color: var(--purple-dark);
+            border: 1px solid #e5deff;
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5.4vw, 67px);
+            line-height: 1.04;
+            letter-spacing: -2.5px;
+            margin: 0 0 17px;
+            max-width: 600px;
+        }
+
+        .hero h1 span {
+            color: var(--purple);
+        }
+
+        .hero p {
+            color: #666980;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0 0 25px;
+        }
+
+        .shop-button {
+            display: inline-block;
+            background: var(--purple);
+            color: white;
+            padding: 14px 22px;
+            border-radius: 11px;
+            font-size: 13px;
+            font-weight: 750;
+            box-shadow: 0 8px 20px #6c4cf12c;
+            transition: .2s;
+        }
+
+        .shop-button:hover {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            padding: 16px 6% 12px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 17px;
+        }
+
+        .benefit-icon {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #f0edff;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .benefit strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .benefit small {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        main {
+            padding: 45px 6% 65px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .section-kicker {
+            color: var(--purple);
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 2px;
+            margin: 0 0 8px;
+            text-transform: uppercase;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(25px, 3vw, 34px);
+            letter-spacing: -1px;
+            margin: 0;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 9px 0 0;
+        }
+
+        .product-count {
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            min-width: 0;
+            position: relative;
+            background: white;
+            border: 1px solid #eeeef5;
+            border-radius: 19px;
+            overflow: hidden;
+            padding: 13px;
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 35px #25224d12;
+        }
+
+        .image-wrap {
+            height: 225px;
+            position: relative;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 13px;
+            background: #f7f7fb;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 13px;
+            transition: transform .35s;
+        }
+
+        .card:hover .product-image {
+            transform: scale(1.045);
+        }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            font-size: 60px;
+            background: linear-gradient(135deg, #f2efff, #f8f8ff);
+        }
+
+        .stock-badge {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            z-index: 1;
+            background: white;
+            color: var(--green);
+            border: 1px solid #e4f4eb;
+            border-radius: 20px;
+            padding: 6px 9px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .stock-badge.sold {
+            color: #bd394b;
+            background: #fff3f4;
+            border-color: #ffe1e4;
+        }
+
+        .card-info {
+            padding: 14px 4px 3px;
+        }
+
+        .product-category {
+            color: var(--purple);
+            font-size: 9px;
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            margin-bottom: 8px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            min-height: 38px;
+            margin: 0 0 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .price {
+            color: var(--text);
+            font-size: 21px;
+            font-weight: 850;
+            margin: 0;
+            letter-spacing: -.5px;
+        }
+
+        .stock-text {
+            color: var(--muted);
+            font-size: 10px;
+            text-align: right;
+        }
+
+        .add-button {
+            width: 100%;
+            background: var(--navy);
+            color: white;
+            border: 0;
+            border-radius: 10px;
+            padding: 13px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 750;
+            transition: .2s;
+        }
+
+        .add-button:hover {
+            background: var(--purple);
+        }
+
+        .add-button:disabled {
+            background: #c7c8d4;
+            cursor: not-allowed;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            padding: 45px 20px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .bottom-banner {
+            margin: 0 6% 55px;
+            padding: 28px 32px;
+            border-radius: 20px;
+            background: var(--navy);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bottom-banner h2 {
+            margin: 0 0 7px;
+            font-size: 22px;
+        }
+
+        .bottom-banner p {
+            margin: 0;
+            color: #c4c6dc;
+            font-size: 13px;
+        }
+
+        .bottom-banner a {
+            flex-shrink: 0;
+            padding: 12px 17px;
+            border-radius: 10px;
+            background: white;
+            color: var(--navy);
+            font-weight: 750;
+            font-size: 12px;
+        }
+
+        footer {
+            padding: 28px 6%;
+            background: white;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        footer strong {
+            color: var(--navy);
+        }
+
+        @media (max-width: 1050px) {
+            .products {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .search-box {
+                min-width: 160px;
+            }
+        }
+
+        @media (max-width: 720px) {
+            header {
+                padding: 15px 5%;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 25px;
+            }
+
+            .header-actions {
+                gap: 8px;
+            }
+
+            .search-box {
+                order: 3;
+                flex-basis: 100%;
+                min-width: 0;
+            }
+
+            .cart-link {
+                padding: 11px 12px;
+                font-size: 12px;
+            }
+
+            .hero-wrap {
+                padding: 20px 4% 10px;
+            }
+
+            .hero {
+                min-height: 320px;
+                padding: 35px 7%;
+                border-radius: 20px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+                padding: 12px 4%;
+                gap: 9px;
+            }
+
+            .benefit {
+                padding: 12px;
+            }
+
+            main {
+                padding: 34px 4% 45px;
+            }
+
+            .products {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .card {
+                padding: 9px;
+                border-radius: 15px;
+            }
+
+            .image-wrap {
+                height: 165px;
+            }
+
+            .card-info {
+                padding-top: 11px;
+            }
+
+            .card h3 {
+                font-size: 14px;
+            }
+
+            .description {
+                font-size: 11px;
+            }
+
+            .price {
+                font-size: 18px;
+            }
+
+            .stock-text {
+                font-size: 9px;
+            }
+
+            .add-button {
+                padding: 12px 5px;
+                font-size: 11px;
+            }
+
+            .bottom-banner {
+                margin: 0 4% 35px;
+                padding: 23px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .image-wrap {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="announcement">
+        YOUR EVERYDAY FINDS, ALL IN ONE PLACE ✦ WELCOME TO SHOPEASE
+    </div>
+
+    <header>
+        <a class="logo" href="{% url 'home' %}">Shop<span>Ease.</span></a>
+
+        <nav class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="#products">Shop All</a>
+            <a href="#why-shopease">Why ShopEase?</a>
+        </nav>
+
+        <div class="header-actions">
+            <label class="search-box">
+                <span>⌕</span>
+                <input type="search" id="productSearch" placeholder="Search products..." aria-label="Search products">
+            </label>
+
+            <a class="cart-link" href="{% url 'cart' %}">
+                🛒 Cart ({{ cart_count|default:0 }})
+            </a>
+        </div>
+    </header>
+
+    <section class="hero-wrap">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">✦ YOUR STYLE. YOUR CHOICE.</div>
+                <h1>Find your next <span>favourite.</span></h1>
+                <p>
+                    Discover products you'll love, all in one place.
+                    Simple shopping, a smooth experience, and great finds.
+                </p>
+                <a class="shop-button" href="#products">Explore the collection&nbsp; →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits" id="why-shopease">
+        <div class="benefit">
+            <div class="benefit-icon">🛍️</div>
+            <div>
+                <strong>Easy Shopping</strong>
+                <small>Discover products in a few clicks</small>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon">🔒</div>
+            <div>
+                <strong>Simple Checkout</strong>
+                <small>A straightforward order experience</small>
+            </div>
+        </div>
+
+        <div class="benefit">
+            <div class="benefit-icon">💜</div>
+            <div>
+                <strong>Made for You</strong>
+                <small>Your everyday shopping destination</small>
+            </div>
+        </div>
+    </section>
+
+    <main id="products">
+        <div class="section-heading">
+            <div>
+                <p class="section-kicker">THE COLLECTION</p>
+                <h2>Explore Products</h2>
+                <p>Find something you'll love today.</p>
+            </div>
+            <span class="product-count" id="productCount">
+                {{ products|length }} products
+            </span>
+        </div>
+
+        <div class="products" id="productGrid">
+            {% for product in products %}
+            <article class="card" data-product-name="{{ product.name|lower }}">
+                <div class="image-wrap">
+                    {% if product.stock > 0 %}
+                    <span class="stock-badge">● In stock</span>
+                    {% else %}
+                    <span class="stock-badge sold">Out of stock</span>
+                    {% endif %}
+
+                    {% if product.image_url %}
+                    <img class="product-image" src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                    <div class="placeholder" style="display:none;">🛍️</div>
+                    {% else %}
+                    <div class="placeholder">🛍️</div>
+                    {% endif %}
+                </div>
+
+                <div class="card-info">
+                    <div class="product-category">SHOP EASE COLLECTION</div>
+                    <h3>{{ product.name }}</h3>
+
+                    <p class="description">
+                        {{ product.description|default:"A great find for your everyday needs."|truncatechars:85 }}
+                    </p>
+
+                    <div class="price-row">
+                        <p class="price">₹{{ product.price }}</p>
+                        <span class="stock-text">
+                            {% if product.stock > 0 %}
+                            {{ product.stock }} available
+                            {% else %}
+                            Currently unavailable
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    {% if product.stock > 0 %}
+                    <form method="post" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button class="add-button" type="submit">
+                            + Add to Cart
+                        </button>
+                    </form>
+                    {% else %}
+                    <button class="add-button" type="button" disabled>
+                        Out of Stock
+                    </button>
+                    {% endif %}
+                </div>
+            </article>
+            {% empty %}
+            <div class="no-results">
+                <h3>No products yet</h3>
+                <p>Add products through your Django admin page to see them here.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <section class="bottom-banner">
+        <div>
+            <h2>Your next favourite is waiting.</h2>
+            <p>Explore the collection and find something that suits you.</p>
+        </div>
+        <a href="#products">Browse Products →</a>
+    </section>
+
+    <footer>
+        <strong>ShopEase.</strong> &nbsp; © {% now "Y" %} ShopEase. Happy shopping!
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById("productSearch");
+        const productCards = Array.from(document.querySelectorAll(".card[data-product-name]"));
+        const productCount = document.getElementById("productCount");
+
+        searchInput.addEventListener("input", function () {
+            const query = this.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            productCards.forEach(function (card) {
+                const name = card.dataset.productName || "";
+                const text = card.textContent.toLowerCase();
+                const matches = name.includes(query) || text.includes(query);
+
+                card.style.display = matches ? "" : "none";
+
+                if (matches) {
+                    visibleCount++;
+                }
+            });
+
+            productCount.textContent = visibleCount + " products";
+
+            let noResults = document.getElementById("noSearchResults");
+
+            if (visibleCount === 0 && productCards.length > 0) {
+                if (!noResults) {
+                    noResults = document.createElement("div");
+                    noResults.id = "noSearchResults";
+                    noResults.className = "no-results";
+                    noResults.textContent = "No matching products found. Try another search.";
+                    document.getElementById("productGrid").appendChild(noResults);
+                }
+            } else if (noResults) {
+                noResults.remove();
+            }
+        });
+    </script>
+</body>
+
+</html>
+```

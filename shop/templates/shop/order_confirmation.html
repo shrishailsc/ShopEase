@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Confirmed | ShopEase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            color: #172033;
+        }
+
+        main {
+            max-width: 650px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 14px;
+        }
+
+        .success {
+            color: #15803d;
+            font-size: 24px;
+        }
+
+        .details {
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        a {
+            display: inline-block;
+            background: #172554;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <p class="success">✓ Order placed successfully!</p>
+        <h1>Thank you, {{ order.customer_name }}!</h1>
+        <p>Your ShopEase order has been saved.</p>
+
+        <div class="details">
+            <strong>Order number:</strong> #{{ order.id }}<br>
+            <strong>Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}<br>
+            <strong>Status:</strong> {{ order.get_status_display }}<br>
+            <strong>Total:</strong> ₹{{ order.total_amount }}
+        </div>
+
+        <h2>Items ordered</h2>
+        {% for item in order.items.all %}
+        <p>{{ item.product_name }} — {{ item.quantity }} × ₹{{ item.price }}</p>
+        {% endfor %}
+
+        <h2>Delivery address</h2>
+        <p>
+            {{ order.customer_name }}<br>
+            {{ order.address }}<br>
+            {{ order.city }}, {{ order.state }} - {{ order.postal_code }}<br>
+            Phone: {{ order.phone }}
+        </p>
+
+        <p>Payment has not been collected. This demo does not yet include online payment.</p>
+        <a href="{% url 'home' %}">Continue Shopping</a>
+    </main>
+</body>
+
+</html>
+<p>
+    Payment Status:
+    {% if order.payment_status == "DEMO_PAID" %}
+    Demo Payment Successful
+    {% else %}
+    Pending
+    {% endif %}
+</p>
+{% if order.payment_status == "DEMO_PAID" %}
+<p>✅ Demo payment successful. No real money was charged.</p>
+{% else %}
+<p>Payment pending. No real money has been charged.</p>
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | ShopEase</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            line-height: 1.6;
+            padding: 35px 16px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #2459e0;
+            letter-spacing: -1px;
+        }
+
+        .brand span {
+            color: #172033;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(20, 35, 70, 0.08);
+            overflow: hidden;
+        }
+
+        .success-header {
+            text-align: center;
+            padding: 38px 24px 30px;
+            background: linear-gradient(180deg, #effcf4, #ffffff);
+            border-bottom: 1px solid #e9eef5;
+        }
+
+        .success-icon {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 43px;
+            line-height: 76px;
+            margin: 0 auto 16px;
+            font-weight: bold;
+        }
+
+        .success-header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #15233d;
+        }
+
+        .success-header p {
+            color: #617087;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 28px;
+        }
+
+        .order-number {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 17px 20px;
+            background: #f5f8ff;
+            border: 1px solid #e0e8ff;
+            border-radius: 12px;
+            margin-bottom: 28px;
+        }
+
+        .order-number strong {
+            font-size: 18px;
+        }
+
+        .order-number span {
+            color: #2459e0;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #172033;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .muted {
+            color: #68758a;
+        }
+
+        .price {
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .total-row {
+            margin-top: 10px;
+            padding: 17px;
+            background: #f5f8ff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .total-row .amount {
+            color: #2459e0;
+            font-size: 23px;
+        }
+
+        .address-box {
+            padding: 18px;
+            border: 1px solid #e5eaf1;
+            border-radius: 12px;
+            background: #fcfdff;
+        }
+
+        .address-box p {
+            margin: 4px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .status {
+            padding: 16px 18px;
+            border-radius: 12px;
+            background: #fff8e8;
+            border: 1px solid #fde3a7;
+            color: #8a5700;
+            margin-bottom: 25px;
+        }
+
+        .status strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2459e0;
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #1745bc;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            border: 1px solid #d8dfeb;
+            color: #26354d;
+            background: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: #f4f7fb;
+        }
+
+        .footer {
+            text-align: center;
+            color: #7b8798;
+            font-size: 13px;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 18px 10px;
+            }
+
+            .success-header {
+                padding: 30px 16px;
+            }
+
+            .success-header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px 16px;
+            }
+
+            .detail-row {
+                align-items: flex-start;
+            }
+
+            .btn-primary {
+                flex-basis: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="brand">Shop<span>Ease</span></div>
+
+        <div class="card">
+
+            <div class="success-header">
+                <div class="success-icon">&#10003;</div>
+                <h1>Order placed successfully!</h1>
+                <p>Thank you, {{ order.customer_name }}!</p>
+                <p>Your order has been saved. Here is your order summary.</p>
+            </div>
+
+            <div class="content">
+
+                <div class="order-number">
+                    <strong>Order #{{ order.id }}</strong>
+                    <span>{{ order.created_at|date:"d M Y, h:i A" }}</span>
+                </div>
+
+                <div class="section">
+                    <h2>Order details</h2>
+
+                    <div class="detail-row">
+                        <span class="muted">Order status</span>
+                        <span class="price">{{ order.get_status_display }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="muted">Payment status</span>
+                        <span class="price">{{ order.get_payment_status_display }}</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Items ordered</h2>
+
+                    {% for item in order.items.all %}
+                    <div class="detail-row">
+                        <div>
+                            <strong>{{ item.product_name }}</strong>
+                            <div class="muted">Quantity: {{ item.quantity }}</div>
+                        </div>
+
+                        <div class="price">
+                            ₹{{ item.price|floatformat:2 }}
+                            <div class="muted">
+                                Subtotal: ₹{% widthratio item.price 1 item.quantity %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="muted">No items are listed for this order.</p>
+                    {% endfor %}
+
+                    <div class="total-row">
+                        <span>Total amount</span>
+                        <span class="amount">₹{{ order.total_amount|floatformat:2 }}</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Delivery address</h2>
+
+                    <div class="address-box">
+                        <p><strong>{{ order.customer_name }}</strong></p>
+                        <p>{{ order.address }}</p>
+                        <p>{{ order.city }}, {{ order.state }} - {{ order.postal_code }}</p>
+                        <p class="muted">Phone: {{ order.phone }}</p>
+                        <p class="muted">Email: {{ order.email }}</p>
+                    </div>
+                </div>
+
+                <div class="status">
+                    <strong>Payment information</strong>
+                    {% if order.payment_status == "DEMO_PAID" %}
+                    Demo payment marked successful. No real money was charged.
+                    {% else %}
+                    Payment is pending. This ShopEase demo does not process real payments.
+                    {% endif %}
+                </div>
+
+                <div class="actions">
+                    <a href="/" class="btn btn-primary">Continue Shopping</a>
+                    <a href="/admin/" class="btn btn-secondary">Admin</a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            Thank you for shopping with ShopEase.
+        </div>
+
+    </div>
+</body>
+
+</html>

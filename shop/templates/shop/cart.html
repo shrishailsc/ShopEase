@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Cart | ShopEase</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #182033;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 850px;
+            margin: 35px auto;
+            padding: 20px;
+        }
+
+        .item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .item h3 {
+            margin-top: 0;
+        }
+
+        input {
+            width: 65px;
+            padding: 9px;
+        }
+
+        button,
+        .shop-link {
+            border: 0;
+            border-radius: 7px;
+            padding: 10px 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        button {
+            background: #172554;
+            color: white;
+        }
+
+        .remove {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .total {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .shop-link {
+            display: inline-block;
+            background: #172554;
+            color: white;
+        }
+
+        .muted {
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="{% url 'home' %}"><strong>ShopEase.</strong></a>
+        <a href="{% url 'home' %}">Continue Shopping</a>
+    </header>
+
+    <main>
+        <h1>Your Shopping Cart ({{ cart_count }})</h1>
+
+        {% for item in items %}
+        <section class="item">
+            <div>
+                <h3>{{ item.product.name }}</h3>
+                <p class="muted">₹{{ item.product.price }} each</p>
+                <p>Subtotal: ₹{{ item.subtotal }}</p>
+            </div>
+
+            <form method="post" action="{% url 'update_cart' item.product.id %}">
+                {% csrf_token %}
+                <label>
+                    Qty
+                    <input type="number" name="quantity" min="0" max="{{ item.product.stock }}"
+                        value="{{ item.quantity }}">
+                </label>
+                <button type="submit">Update</button>
+            </form>
+
+            <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                {% csrf_token %}
+                <button class="remove" type="submit">Remove</button>
+            </form>
+        </section>
+        {% empty %}
+        <p>Your cart is empty. Browse the store and add a product!</p>
+        {% endfor %}
+
+        {% if items %}
+        <section class="total">Total: ₹{{ total }}</section>
+        <p class="muted">Review your items before placing your order.</p>
+        <p>
+            <a class="shop-link" href="{% url 'checkout' %}">
+                Proceed to Checkout
+            </a>
+        </p>
+        {% endif %}
+
+        <p><a class="shop-link" href="{% url 'home' %}">Continue Shopping</a></p>
+    </main>
+</body>
+
+</html>
